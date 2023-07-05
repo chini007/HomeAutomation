@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    io.kompose.service: mosquitto
+  {{- include "helmmosquitto.labels" . | nindent 4 }}
+  annotations:
+    kompose.cmd: kompose convert -c
+    kompose.version: 1.28.0 (HEAD)
+spec:
+  replicas: {{ .Values.mosquitto.replicas }}
+  selector:
+    matchLabels:
+      io.kompose.service: mosquitto
+    {{- include "helmmosquitto.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/ihome-default: "true"
+        io.kompose.service: mosquitto
+      {{- include "helmmosquitto.selectorLabels" . | nindent 8 }}
+      annotations:
+        kompose.cmd: kompose convert -c
+        kompose.version: 1.28.0 (HEAD)
+    spec:
+      containers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.mosquitto.mosquitto.image.repository }}:{{ .Values.mosquitto.mosquitto.image.tag
+          | default .Chart.AppVersion }}
+        name: mosquitto
+        ports:
+        - containerPort: 1883
+        - containerPort: 9001
+        resources: {}
+        volumeMounts:
+        - mountPath: /mosquitto
+          name: mosquitto
+        - mountPath: /mosquitto/data
+          name: mosquitto-data
+        - mountPath: /mosquitto/log
+          name: mosquitto-log
+      restartPolicy: Always
+      volumes:
+      - name: mosquitto
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-pvc
+      - name: mosquitto-data
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-data-pvc
+      - name: mosquitto-log
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-log-pvc

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    io.kompose.service: homeassistant
+  {{- include "helmha.labels" . | nindent 4 }}
+  annotations:
+    kompose.cmd: kompose convert -c
+    kompose.version: 1.28.0 (HEAD)
+spec:
+  replicas: {{ .Values.homeassistant.replicas }}
+  selector:
+    matchLabels:
+      io.kompose.service: homeassistant
+    {{- include "helmha.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/ihome-default: "true"
+        io.kompose.service: homeassistant
+      {{- include "helmha.selectorLabels" . | nindent 8 }}
+      annotations:
+        kompose.cmd: kompose convert -c
+        kompose.version: 1.28.0 (HEAD)
+    spec:
+      containers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.homeassistant.homeassistant.image.repository }}:{{ .Values.homeassistant.homeassistant.image.tag
+          | default .Chart.AppVersion }}
+        name: homeassistant
+        ports:
+        - containerPort: 8123
+        resources: {}
+        securityContext: {{- toYaml .Values.homeassistant.homeassistant.containerSecurityContext
+          | nindent 10 }}
+        volumeMounts:
+        - mountPath: /config
+          name: homeassistant-config
+        - mountPath: /etc/localtime
+          name: homeassistant-localtime
+      restartPolicy: Always
+      volumes:
+      - name: homeassistant-config
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-config-pvc
+      - name: homeassistant-localtime
+        persistentVolumeClaim:
+          claimName: {{ .Release.Name }}-localtime-pvc

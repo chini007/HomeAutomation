@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    io.portainer.kubernetes.application.stack: portainer
+  {{- include "helmportainer.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.portainer.type }}
+  selector:
+    app.kubernetes.io/instance: portainer
+    app.kubernetes.io/name: portainer
+  {{- include "helmportainer.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.portainer.ports | toYaml | nindent 2 -}}

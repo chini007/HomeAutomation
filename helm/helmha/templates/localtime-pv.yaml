@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Name }}-localtime-pv
+  labels:
+    type: local
+  {{- include "helmha.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadOnlyMany
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /etc/localtime
+  storageClassName: generic

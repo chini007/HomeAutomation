@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    io.kompose.service: {{ .Release.Name }}
+  {{- include "helmdsmqtt.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.digitalstromMqtt.replicas }}
+  selector:
+    matchLabels:
+      io.kompose.service: {{ .Release.Name }}
+    {{- include "helmdsmqtt.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: {{ .Release.Name }}
+      {{- include "helmdsmqtt.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: DIGITALSTROM_HOST
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.digitalstromHost
+            }}
+        - name: DIGITALSTROM_PASSWORD
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.digitalstromPassword
+            }}
+        - name: DIGITALSTROM_USERNAME
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.digitalstromUsername
+            }}
+        - name: HOME_ASSISTANT_DISCOVERY_ENABLED
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.homeAssistantDiscoveryEnabled
+            }}
+        - name: HOME_ASSISTANT_DISCOVERY_PREFIX
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.homeAssistantDiscoveryPrefix
+            }}
+        - name: HOME_ASSISTANT_REMOVE_REGEXP_FROM_NAME
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.homeAssistantRemoveRegexpFromName
+            }}
+        - name: MQTT_PASSWORD
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.mqttPassword }}
+        - name: MQTT_RETAIN
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.mqttRetain }}
+        - name: MQTT_URL
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.mqttUrl }}
+        - name: MQTT_USERNAME
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.mqttUsername }}
+        - name: REFRESH_AT_START
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.refreshAtStart }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.digitalstromMqtt.digitalstromMqtt.image.repository }}:{{ .Values.digitalstromMqtt.digitalstromMqtt.image.tag
+          | default .Chart.AppVersion }}
+        name: {{ .Release.Name }}
+        resources: {}
+      restartPolicy: Always

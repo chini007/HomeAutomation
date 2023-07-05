@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-log-pvc
+  labels:
+    io.kompose.service: {{ .Release.Name }}-log-pvc
+  {{- include "helmmosquitto.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.pvc.logPvc.storageRequest | quote }}
+  selector:
+    matchLabels:
+      type: local
+  storageClassName: {{ .Values.pvc.logPvc.storageClass | quote }}
+  volumeName: {{ .Release.Name }}-log-pv

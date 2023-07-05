@@ -1,0 +1,22 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: dsslocal
+spec:
+  ports:
+  {{- .Values.dsslocal.ports | toYaml | nindent 2}}
+
+
+---
+
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: dsslocal
+  labels:
+  {{- include "helmdsmqtt.labels" . | nindent 4 }}
+subsets:
+  - addresses:
+    - ip: {{ .Values.dsslocal.external.ip }}
+    ports:
+    - port: {{ .Values.dsslocal.external.port }}

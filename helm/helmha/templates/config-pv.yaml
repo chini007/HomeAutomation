@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Release.Name }}-config-pv
+  labels:
+    type: local
+  {{- include "helmha.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /Users/insrsa/Organize/Personal/iHome/hass
+  storageClassName: generic

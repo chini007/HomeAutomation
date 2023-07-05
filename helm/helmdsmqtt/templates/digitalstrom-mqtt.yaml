@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: dsmqtt
+    kubernetes.io/name: dsmqtt
+  {{- include "helmdsmqtt.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.digitalstromMqtt.type }}
+  selector:
+    app: dsmqtt
+  {{- include "helmdsmqtt.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.digitalstromMqtt.ports | toYaml | nindent 2 -}}
