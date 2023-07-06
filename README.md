@@ -1,3 +1,3 @@
 # HomeAutomation
-![](./images/iHome_readme.png)
+![](./images/iHome.png)
 
