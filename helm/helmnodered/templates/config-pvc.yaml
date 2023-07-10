@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-config-pvc
+  labels:
+    io.kompose.service: {{ .Release.Name }}-config-pvc
+  {{- include "helmnodered.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.pvc.configPvc.storageRequest | quote }}
+  selector:
+    matchLabels:
+      type: local
+  storageClassName: {{ .Values.pvc.configPvc.storageClass | quote }}
+  volumeName: {{ .Release.Name }}-config-pv
