@@ -11,5 +11,6 @@ spec:
   selector:
     app: dsmqtt
   {{- include "helmdsmqtt.selectorLabels" . | nindent 4 }}
+    app.name: {{ .Release.Name }}
   ports:
 	{{- .Values.digitalstromMqtt.ports | toYaml | nindent 2 -}}

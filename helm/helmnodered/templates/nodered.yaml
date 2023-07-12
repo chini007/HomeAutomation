@@ -10,5 +10,6 @@ spec:
   selector:
     io.kompose.service: nodered
   {{- include "helmnodered.selectorLabels" . | nindent 4 }}
+    app.name: {{ .Release.Name }}
   ports:
 	{{- .Values.nodered.ports | toYaml | nindent 2 -}}

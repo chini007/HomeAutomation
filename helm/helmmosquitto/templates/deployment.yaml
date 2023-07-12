@@ -14,12 +14,14 @@ spec:
     matchLabels:
       io.kompose.service: mosquitto
     {{- include "helmmosquitto.selectorLabels" . | nindent 6 }}
+      app.name: {{ .Release.Name }}
   template:
     metadata:
       labels:
         io.kompose.network/ihome-default: "true"
         io.kompose.service: mosquitto
       {{- include "helmmosquitto.selectorLabels" . | nindent 8 }}
+        app.name: {{ .Release.Name }}
       annotations:
         kompose.cmd: kompose convert -c
         kompose.version: 1.28.0 (HEAD)

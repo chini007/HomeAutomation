@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name:   {{ .Release.Name }}
   labels:
     io.kompose.service: nodered
   {{- include "helmnodered.labels" . | nindent 4 }}
@@ -11,12 +11,14 @@ spec:
     matchLabels:
       io.kompose.service: nodered
     {{- include "helmnodered.selectorLabels" . | nindent 6 }}
+      app.name: {{ .Release.Name }}
   template:
     metadata:
       labels:
         io.kompose.network/nodered-default: "true"
         io.kompose.service: nodered
       {{- include "helmnodered.selectorLabels" . | nindent 8 }}
+        app.name: {{ .Release.Name }}
     spec:
       containers:
       - env:

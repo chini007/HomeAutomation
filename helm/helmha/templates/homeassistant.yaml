@@ -13,5 +13,6 @@ spec:
   selector:
     io.kompose.service: homeassistant
   {{- include "helmha.selectorLabels" . | nindent 4 }}
+    app.name: {{ .Release.Name }}
   ports:
 	{{- .Values.homeassistant.ports | toYaml | nindent 2 -}}
