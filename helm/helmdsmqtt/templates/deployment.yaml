@@ -24,11 +24,11 @@ spec:
         - name: DIGITALSTROM_HOST
           value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.digitalstromHost
             }}
-        - name: DIGITALSTROM_PASSWORD
-          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.digitalstromPassword
+        - name: DIGITALSTROM_PORT
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.digitalstromPort
             }}
-        - name: DIGITALSTROM_USERNAME
-          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.digitalstromUsername
+        - name: DIGITALSTROM_API_KEY	
+          value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.digitalstromApiKey
             }}
         - name: HOME_ASSISTANT_DISCOVERY_ENABLED
           value: {{ quote .Values.digitalstromMqtt.digitalstromMqtt.env.homeAssistantDiscoveryEnabled
