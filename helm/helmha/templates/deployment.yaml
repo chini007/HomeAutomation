@@ -18,7 +18,7 @@ spec:
   template:
     metadata:
       labels:
-        io.kompose.network/ihome-default: "true"
+        io.kompose.network/ihome-default: "false"
         io.kompose.service: homeassistant
       {{- include "helmha.selectorLabels" . | nindent 8 }}
         app.name: {{ .Release.Name }}
@@ -26,6 +26,7 @@ spec:
         kompose.cmd: kompose convert -c
         kompose.version: 1.28.0 (HEAD)
     spec:
+      hostNetwork: true
       containers:
       - env:
         - name: KUBERNETES_CLUSTER_DOMAIN
