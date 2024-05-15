@@ -34,7 +34,6 @@ spec:
         image: {{ .Values.homeassistant.homeassistant.image.repository }}:{{ .Values.homeassistant.homeassistant.image.tag
           | default .Chart.AppVersion }}
         name: homeassistant
-        imagePullPolicy: Always
         ports:
         - containerPort: 8123
         resources: {}
