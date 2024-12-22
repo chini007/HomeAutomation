@@ -11,5 +11,5 @@ spec:
   capacity:
     storage: 1Gi
   hostPath:
-    path: /Users/insrsa/Organize/Personal/iHome/nodered/data
+    path: /var/data/nodered/data
   storageClassName: generic

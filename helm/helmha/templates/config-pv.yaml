@@ -11,5 +11,5 @@ spec:
   capacity:
     storage: 1Gi
   hostPath:
-    path: /Users/insrsa/Organize/Personal/iHome/hass
+    path: /var/data/hass
   storageClassName: generic

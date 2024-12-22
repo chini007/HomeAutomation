@@ -11,5 +11,5 @@ spec:
   capacity:
     storage: 100Mi
   hostPath:
-    path: /Users/insrsa/Organize/Personal/iHome/mosquitto/log
+    path: /var/data/mosquitto/log
   storageClassName: generic
